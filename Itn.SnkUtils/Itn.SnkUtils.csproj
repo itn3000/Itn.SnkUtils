@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>dotnet-snkutils</AssemblyName>
+    <IsPackable>true</IsPackable>
+    <PackAsTool>true</PackAsTool>
+    <PackageTags>snk</PackageTags>
+    <PackageId>Itn.SnkUtils</PackageId>
+    <Description>snk utilities for strong named assembly</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="McMaster.Extensions.CommandlineUtils" Version="2.2.5" />
+    <Reference Include="BouncyCastle.Crypto" HintPath="$(ProjectDir)BouncyCastle.Crypto.dll"/>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Itn.SnkUtils.Test</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+</Project>

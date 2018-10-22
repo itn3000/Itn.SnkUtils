@@ -1,0 +1,18 @@
+using System;
+using Xunit;
+using System.IO;
+using System.Text;
+using System.Security.Cryptography;
+using McMaster.Extensions.CommandLineUtils;
+
+namespace Itn.SnkUtils.Test
+{
+    public class @Model.ClassName
+    {
+        [Fact]
+        public void Test1()
+        {
+
+        }
+    }
+}
