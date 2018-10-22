@@ -4,6 +4,7 @@ using bcssl = Org.BouncyCastle.OpenSsl;
 using System.IO;
 using System.Text;
 using McMaster.Extensions.CommandLineUtils;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Itn.SnkUtils
 {
@@ -28,8 +29,12 @@ namespace Itn.SnkUtils
     {
         static CommandLineApplication<RootApp> CreateApp()
         {
+            var services = new ServiceCollection();
+            services.AddTransient<Org.BouncyCastle.OpenSsl.IPasswordFinder, ConsolePassFinder>();
+            services.AddTransient<IConsole, PhysicalConsole>();
             var app = new CommandLineApplication<RootApp>();
             app.Conventions.UseDefaultConventions();
+            app.Conventions.UseConstructorInjection(services.BuildServiceProvider());
             return app;
         }
         static void Main(string[] args)

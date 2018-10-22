@@ -32,7 +32,7 @@ namespace Itn.SnkUtils
                 {
                     var pwriter = new bcssl.PemWriter(tw);
                     var keyPair = bcsec.DotNetUtilities.GetRsaKeyPair(rsa);
-                    var pkcs8gen = new bcssl.Pkcs8Generator(keyPair.Private, bcssl.Pkcs8Generator.PbeSha1_3DES);
+                    var pkcs8gen = new bcssl.Pkcs8Generator(keyPair.Private);
                     pkcs8gen.SecureRandom = new bcsec.SecureRandom();
                     pwriter.WriteObject(pkcs8gen);
                 }

@@ -24,12 +24,17 @@ namespace Itn.SnkUtils
         [Required]
         [Argument(0, "INPUT_PATH", "input file path(PKCS8 PEM format)")]
         public string InputPath { get; }
+        public ConvertFromPkcs8PemCommand(bcssl.IPasswordFinder passwordFinder)
+        {
+            m_Finder = passwordFinder;
+        }
+        bcssl.IPasswordFinder m_Finder;
         public void OnExecute(IConsole console)
         {
             using (var istm = File.OpenRead(InputPath))
             using (var sreader = new StreamReader(istm))
             {
-                var preader = new bcssl.PemReader(sreader, new ConsolePassFinder(console));
+                var preader = new bcssl.PemReader(sreader, m_Finder);
                 var pem = preader.ReadObject();
                 if(pem is bccrypto.AsymmetricCipherKeyPair keyPair)
                 {

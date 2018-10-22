@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Itn.SnkUtils\Itn.SnkUtils.csproj" />
+    <Reference Include="BouncyCastle.Crypto" HintPath="../../Itn.SnkUtils/BouncyCastle.Crypto.dll"/>
   </ItemGroup>
 
 </Project>

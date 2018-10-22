@@ -1,0 +1,28 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+before_build:
+  pwsh: msbuild Itn.SnkUtils.sln /t:Restore
+after_build:
+  pwsh: msbuild Itn.SnkUtils.sln /t:Pack /p:Configuration=Release
+build:
+  verbosity: minimal
+  publish_core_console: true
+artifacts:
+  - path: '**\*.nupkg'
+    name: NuGetPackages
+# deploy:
+#   - provider: NuGet
+#     api_key:
+#       secure: [add apikey for nuget]
+#     on:
+#       APPVEYOR_REPO_TAG: true
+#     artifact: NuGetPackages
+#   - provider: GitHub
+#     auth_token:
+#       secure: [add auth_token for github release]
+#     artifact: NuGetPackages
+#     draft: false
+#     prerelease: false
+#     on:
+#       branch: master
+#       appveyor_repo_tag: true
