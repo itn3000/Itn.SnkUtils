@@ -6,9 +6,12 @@
     <AssemblyName>dotnet-snkutils</AssemblyName>
     <IsPackable>true</IsPackable>
     <PackAsTool>true</PackAsTool>
-    <PackageTags>snk</PackageTags>
+    <PackageTags>snk global-tools</PackageTags>
     <PackageId>Itn.SnkUtils</PackageId>
     <Description>snk utilities for strong named assembly</Description>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <PackageProjectUrl>https://github.com/itn3000/Itn.SnkUtils</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/itn3000/Itn.SnkUtils/releases/</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

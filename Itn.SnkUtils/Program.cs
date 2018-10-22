@@ -17,7 +17,8 @@ namespace Itn.SnkUtils
     }
     [Command()]
     [Subcommand("create", typeof(CreateSnkCommand))]
-    [Subcommand("convert-from", typeof(ConvertFromOpensslPemCommand))]
+    [Subcommand("convert-from", typeof(ConvertFromPkcs8PemCommand))]
+    [Subcommand("convert-to", typeof(ConvertToPkcs8PemCommand))]
     [HelpOption]
     class RootApp
     {

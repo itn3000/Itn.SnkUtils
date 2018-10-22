@@ -6,10 +6,21 @@ namespace Itn.SnkUtils
 {
     class ConsolePassFinder : bcssl.IPasswordFinder
     {
+        IConsole m_Console;
         public char[] GetPassword()
         {
-            return Prompt.GetPassword("input password: ").Trim().ToCharArray();
+            if (m_Console.IsInputRedirected)
+            {
+                return m_Console.In.ReadLine().Trim().ToCharArray();
+            }
+            else
+            {
+                return Prompt.GetPassword("input password: ").Trim().ToCharArray();
+            }
         }
-        public static ConsolePassFinder Instance = new ConsolePassFinder();
+        public ConsolePassFinder(IConsole console)
+        {
+            m_Console = console;
+        }
     }
 }

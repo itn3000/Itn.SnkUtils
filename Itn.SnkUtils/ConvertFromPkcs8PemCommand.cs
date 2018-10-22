@@ -14,34 +14,22 @@ using bcsec = Org.BouncyCastle.Security;
 
 namespace Itn.SnkUtils
 {
-    [Command(Description = "convert from openssl's RSA private key(PEM format)")]
+    [Command(Description = "convert from PKCS8 PEM formatted RSA private key. if password needed, read from stdin")]
     [HelpOption]
-    class ConvertFromOpensslPemCommand
+    class ConvertFromPkcs8PemCommand
     {
         [Required]
         [Argument(1, "OUTPUT_PATH", "output file path")]
         public string OutputPath { get; }
         [Required]
-        [Argument(0, "INPUT_PATH", "input file path(openssl's PEM format)")]
+        [Argument(0, "INPUT_PATH", "input file path(PKCS8 PEM format)")]
         public string InputPath { get; }
         public void OnExecute(IConsole console)
         {
             using (var istm = File.OpenRead(InputPath))
             using (var sreader = new StreamReader(istm))
             {
-                var preader = new bcssl.PemReader(sreader, ConsolePassFinder.Instance);
-                // var pem = preader.ReadPemObject();
-                // foreach (var header in pem.Headers)
-                // {
-                //     if (header is bcpem.PemHeader pemheader)
-                //     {
-                //         console.Error.WriteLine($"{pemheader.Name}={pemheader.Value}");
-                //     }
-                //     else
-                //     {
-                //         console.Error.WriteLine($"{header}");
-                //     }
-                // }
+                var preader = new bcssl.PemReader(sreader, new ConsolePassFinder(console));
                 var pem = preader.ReadObject();
                 if(pem is bccrypto.AsymmetricCipherKeyPair keyPair)
                 {
