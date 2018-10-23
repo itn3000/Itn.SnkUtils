@@ -31,6 +31,9 @@ namespace Itn.SnkUtils
         bcssl.IPasswordFinder m_Finder;
         public void OnExecute(IConsole console)
         {
+            // offset of BLOBHEADER.aiKeyAlg
+            // see https://docs.microsoft.com/en-us/windows/desktop/api/Wincrypt/ns-wincrypt-_publickeystruc
+            const int OffsetOfAlgId = 1 + 1 + 2;
             using (var istm = File.OpenRead(InputPath))
             using (var sreader = new StreamReader(istm))
             {
@@ -41,12 +44,16 @@ namespace Itn.SnkUtils
                     var rsaPrivateKey = keyPair.Private as bccrypto.Parameters.RsaPrivateCrtKeyParameters;
                     // 'ToRSA()' uses unsupported API in Linux.
                     var rsaparam = bcsec.DotNetUtilities.ToRSAParameters(rsaPrivateKey);
-                    var cspparam = new CspParameters();
-                    cspparam.KeyNumber = (int)KeyNumber.Signature;
-                    using (var rsa = new RSACryptoServiceProvider(cspparam))
+                    using (var rsa = new RSACryptoServiceProvider())
                     {
                         rsa.ImportParameters(rsaparam);
-                        File.WriteAllBytes(OutputPath, rsa.ExportCspBlob(true));
+                        var bytes = rsa.ExportCspBlob(true);
+                        // set ALG_ID to 0x00002400(little endian)
+                        bytes[OffsetOfAlgId] = 0;
+                        bytes[OffsetOfAlgId + 1] = 0x24;
+                        bytes[OffsetOfAlgId + 2] = 0;
+                        bytes[OffsetOfAlgId + 3] = 0;
+                        File.WriteAllBytes(OutputPath, bytes);
                     }
                 }
             }

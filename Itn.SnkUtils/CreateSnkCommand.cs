@@ -17,10 +17,15 @@ namespace Itn.SnkUtils
         public int KeyBits { get; } = 2048;
         public void OnExecute()
         {
-            var cspparam = new CspParameters();
-            cspparam.KeyNumber = (int)KeyNumber.Signature;
-            using(var rsa = new RSACryptoServiceProvider(KeyBits, cspparam))
+            const int OffsetOfAlgId = 1 + 1 + 2;
+            using (var rsa = new RSACryptoServiceProvider(KeyBits))
             {
+                var bytes = rsa.ExportCspBlob(true);
+                // set ALG_ID to 0x00002400(little endian)
+                bytes[OffsetOfAlgId] = 0;
+                bytes[OffsetOfAlgId + 1] = 0x24;
+                bytes[OffsetOfAlgId + 2] = 0;
+                bytes[OffsetOfAlgId + 3] = 0;
                 File.WriteAllBytes(OutputPath, rsa.ExportCspBlob(true));
             }
         }
