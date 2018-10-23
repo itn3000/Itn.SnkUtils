@@ -36,11 +36,12 @@ namespace Itn.SnkUtils
             {
                 var preader = new bcssl.PemReader(sreader, m_Finder);
                 var pem = preader.ReadObject();
-                if(pem is bccrypto.AsymmetricCipherKeyPair keyPair)
+                if (pem is bccrypto.AsymmetricCipherKeyPair keyPair)
                 {
                     var rsaPrivateKey = keyPair.Private as bccrypto.Parameters.RsaPrivateCrtKeyParameters;
+                    // 'ToRSA()' uses unsupported API in Linux.
                     var rsaparam = bcsec.DotNetUtilities.ToRSAParameters(rsaPrivateKey);
-                    using(var rsa = new RSACryptoServiceProvider())
+                    using (var rsa = new RSACryptoServiceProvider())
                     {
                         rsa.ImportParameters(rsaparam);
                         File.WriteAllBytes(OutputPath, rsa.ExportCspBlob(true));

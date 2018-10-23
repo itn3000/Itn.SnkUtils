@@ -92,8 +92,13 @@ namespace Itn.SnkUtils.Test
                     Assert.NotNull(keyPair);
                     var rsaPrivate = keyPair as Org.BouncyCastle.Crypto.Parameters.RsaPrivateCrtKeyParameters;
                     Assert.NotNull(rsaPrivate);
-                    var dotnetRsa = Org.BouncyCastle.Security.DotNetUtilities.ToRSA(rsaPrivate);
-                    Assert.Equal(keySize, dotnetRsa.KeySize);
+                    // 'ToRSA()' uses unsupported API in Linux.
+                    var rsaparam = Org.BouncyCastle.Security.DotNetUtilities.ToRSAParameters(rsaPrivate);
+                    using (var rsa = new RSACryptoServiceProvider())
+                    {
+                        rsa.ImportParameters(rsaparam);
+                        Assert.Equal(keySize, rsa.KeySize);
+                    }
                 }
             }
             finally
