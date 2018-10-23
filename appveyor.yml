@@ -12,7 +12,7 @@ build:
   publish_core_console: true
 artifacts:
   - path: '**\*.nupkg'
-    name: "NuGetPackages_$(APPVEYOR_BUILD_IMAGE)"
+    name: "NuGetPackages_$(APPVEYOR_BUILD_WORKER_IMAGE)"
 # deploy:
 #   - provider: NuGet
 #     api_key:
