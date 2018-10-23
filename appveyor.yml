@@ -4,9 +4,9 @@ image:
   - Ubuntu
 
 before_build:
-  pwsh: dotnet msbuild Itn.SnkUtils.sln /t:Restore
+  pwsh: dotnet restore Itn.SnkUtils.sln
 after_build:
-  pwsh: dotnet msbuild Itn.SnkUtils.sln /t:Pack /p:Configuration=Release
+  pwsh: dotnet pack --include-symbols -c Release Itn.SnkUtils.sln
 build:
   verbosity: minimal
   publish_core_console: true

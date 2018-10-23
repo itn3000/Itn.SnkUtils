@@ -17,7 +17,9 @@ namespace Itn.SnkUtils
         public int KeyBits { get; } = 2048;
         public void OnExecute()
         {
-            using(var rsa = new RSACryptoServiceProvider(KeyBits))
+            var cspparam = new CspParameters();
+            cspparam.KeyNumber = (int)KeyNumber.Signature;
+            using(var rsa = new RSACryptoServiceProvider(KeyBits, cspparam))
             {
                 File.WriteAllBytes(OutputPath, rsa.ExportCspBlob(true));
             }

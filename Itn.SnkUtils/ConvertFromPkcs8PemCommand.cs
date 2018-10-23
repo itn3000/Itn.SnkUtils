@@ -41,7 +41,9 @@ namespace Itn.SnkUtils
                     var rsaPrivateKey = keyPair.Private as bccrypto.Parameters.RsaPrivateCrtKeyParameters;
                     // 'ToRSA()' uses unsupported API in Linux.
                     var rsaparam = bcsec.DotNetUtilities.ToRSAParameters(rsaPrivateKey);
-                    using (var rsa = new RSACryptoServiceProvider())
+                    var cspparam = new CspParameters();
+                    cspparam.KeyNumber = (int)KeyNumber.Signature;
+                    using (var rsa = new RSACryptoServiceProvider(cspparam))
                     {
                         rsa.ImportParameters(rsaparam);
                         File.WriteAllBytes(OutputPath, rsa.ExportCspBlob(true));
